@@ -1,0 +1,574 @@
+/*
+ * У нас тут девелопмент, так что можно всё :)))
+ *
+ * Пробуем модель такую: Content -- Layout -- Formatting -- Coloring -- Animation
+ * внутре, соответственно, по алфавиту, окромя:
+ * + Layout => Display -- Positioning -- Vertical-align -- Height/Width -- Margin/Padding -- Border/Outline
+ *
+ */
+
+/* --- ОБЩЕЕ --- */
+
+/* РЕСЕТИКИ */
+
+*,
+*::before,
+*::after {
+    /* Для удобства дальнейшей работы */
+    box-sizing: border-box;
+}
+
+ul[class] {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+body {
+    margin: 0;
+    /* Formatting */
+    font-family: Roboto, sans-serif;
+    /* Coloring */
+    background-color: #f4f4f4;
+}
+
+/* МАКЕТ */
+
+.container {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 60px 15px;
+}
+@media (max-width: 1200px) {
+    .container {
+        max-width: 900px;
+    }
+}
+@media (max-width: 900px) {
+    .container {
+        max-width: 600px;
+    }
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.main {
+    width: 870px;
+}
+
+.main + .sidebar {
+    margin-left: 30px;
+}
+
+.cards-holder {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+@media (max-width: 600px) {
+    .cards-holder {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.cards-holder > .card-link {
+    margin-bottom: 30px;    /* Чтоб отступ снизу был не индивидуальным свойством карточки */
+}
+
+.sidebar {
+    position: relative;
+    min-width: 270px;
+    width: 270px;
+}
+@media (max-width: 900px) {
+    .sidebar {
+        overflow-y: auto;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        top: 0;
+
+        margin-left: 0 !important;
+        padding: 15px;
+
+        background-color: white;
+        box-shadow: 0 0 15px #0000008f;
+        transform: translateX(-120%);
+        transition: transform 0.2s ease-in;
+    }
+}
+
+.sidebar--mobile-active {
+    transform: none;
+}
+
+.widgets-holder > * + * {
+    margin-top: 31px;
+}
+
+/* КАРТОЧКА */
+
+a.card-link {
+    display: inline-block;
+    text-decoration: none;
+    transition: opacity 0.2s ease-in;
+}
+a.card-link:hover {
+    opacity: 0.9;
+}
+a.card-link.card-link--hidden {
+    display: none;
+}
+
+.card {
+    position: relative;
+    width: 270px;
+    background-color: white;
+}
+
+.card__badges {
+    display: flex;
+    position: absolute;
+    left: 15px;
+    right: 15px;
+    top: 10px;
+}
+
+.card__badges > * + * {
+    margin-left: 10px;
+}
+
+.card__badge {
+    /* Layout */
+    display: inline-block;
+    height: 22px;
+    padding: 1px 10px;
+    border-radius: 4px;
+    /* Formatting */
+    font-size: 14px;
+    line-height: 22px; /* Равна высоте, т.к. текст априори однострочный */
+    /* Coloring */
+    background-color: lightgray;
+    color: black;
+}
+
+.card__badge--comfort {
+    background-color: #ffcf26;
+}
+
+.card__badge--sale {
+    background-color: #11be75;
+    color: white;
+}
+
+.card__img > img {
+    display: block;
+}
+
+.card__content {
+    /* Layout */
+    padding: 15px 15px 19px;
+    /* Formatting */
+    font-size: 14px;
+    line-height: 1.25;
+    /* Coloring */
+    color: black;
+}
+
+.card__title {
+    /* Layout */
+    margin: 0; /* Ресет стилей */
+    margin-bottom: 9px;
+    /* Formatting */
+    font-size: 18px;
+    line-height: 22px;    
+}
+
+.card__term,
+.card__metro {
+    margin-bottom: 9px;
+}
+
+.card__metro::before {
+    content: '';
+
+    display: inline-block;
+
+    height: 11px;
+    width: 16px;
+
+    margin-right: 10px;
+
+    vertical-align: baseline;
+
+    background: red;
+    background: url(./../img/icons/metro.svg) no-repeat;
+}
+
+.card__address {
+    color: #777;
+}
+
+/* КНОПКА "ПОКАЗАТЬ ЕЩЁ" */
+
+.btn-more {
+    /* Display/Flexbox */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Layout */
+    height: 80px;
+    width: 100%;
+    border: none;
+    border-radius: 4px;
+    /* Formatting, coloring, etc. */
+    font: 18px/1 Roboto, sans-sefif; /* Да-да, шрифты у кнопки от боди не наследуются */
+    background-color: #e5e5e5;
+    color: #4290cd;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in;
+}
+.btn-more:hover {
+    background-color: #d9d9d9;
+}
+
+.btn-more img {
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: bottom;
+}
+
+/* === САЙДБАР === */
+
+/* SIDEBAR TOGGLE BUTTON */
+
+.toggle-sidebar {
+    box-sizing: content-box;
+    position: fixed;
+    z-index: 10;
+    right: 15px;
+    top: 15px;
+    height: 30px;
+    width: 30px;
+    padding: 4px;
+    border: none;
+    border-radius: 4px;
+    background-color: yellowgreen;
+}
+
+.menu-icon-wrapper {
+    display: none;
+}
+@media (max-width: 900px) {
+    .menu-icon-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.menu-icon {
+    position: relative;
+    height: 4px;
+    width: 30px;
+    background-color: white;
+}
+.menu-icon::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -10px;
+    height: 4px;
+    width: 30px;
+    background-color: white;
+    transition: transform 0.2s ease-in, top 0.2s linear 0.2s;
+}
+.menu-icon::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    height: 4px;
+    width: 30px;
+    background-color: white;
+    transition: transform 0.2s ease-in, top 0.2s linear 0.2s;
+}
+
+.menu-icon.menu-icon-active {
+    background-color: transparent;
+}
+.menu-icon.menu-icon-active::before {
+    transform: rotate(45deg);
+    top: 0;
+    transition: top 0.2s linear, transform 0.2s ease-in 0.2s;
+}
+.menu-icon.menu-icon-active::after {
+    transform: rotate(-45deg);
+    top: 0;
+    transition: top 0.2s linear, transform 0.2s ease-in 0.2s;
+}
+
+/* --- ВИДЖЕТЫ --- */
+
+/* КЛИКАБЕЛЬНЫЙ ЗАГОЛОВОК */
+
+.widget__title {
+    position: relative;
+    margin: 0;
+    margin-bottom: 20px;
+    font-size: 18px;
+    line-height: 22px;
+    color: black;
+    cursor: pointer;
+}
+.widget__title::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 20px;
+    width: 20px;
+    background: url(./../img/icons/chevron-up.svg) center no-repeat;
+}
+
+.widget__title--closed::after {
+    transform: rotate(180deg);
+}
+
+.widget__body--hidden {
+    display: none;
+}
+
+/* БЛИЗОСТЬ К МЕТРО */
+
+.location__row {
+    display: flex;
+    overflow: hidden;
+    border: 1px solid #d6d6d6;
+}
+.location__row:first-child {
+    border-radius: 4px 4px 0 0;
+}
+.location__row:last-child {
+    border-radius: 0 0 4px 4px;
+    border-top: none;
+}
+
+.location__btn {
+    flex-grow: 1;
+    height: 48px;   /* Да, вообще 50, но у родителя-то бордер! */
+    border: none;
+    font: 500 14px/50px Roboto, sans-serif;
+    text-align: center;
+    background-color: transparent;
+    color: #3c3c3c;
+    transition: background-color 0.2s ease-in;
+    cursor: pointer;    
+}
+.location__btn:hover {
+    background-color: #ffe27a;
+}
+
+.location__btn--all {
+    font-size: 16px;
+}
+
+.location__checkbox {
+    /* у профессионала было: */
+    /* width: 1px; height: 1px; position: absolute; opacity: 0; appearance: none; */
+    display: none;
+}
+
+.location__checkbox:checked + .location__btn {
+/* EQ .location__btn--active */
+    background-color: #ffcf26;
+}
+.location__checkbox:checked + .location__btn:hover {
+    background-color: #efaa0f;
+}
+
+/* ВИДЖЕТ ТИПА "СПИСОК" */
+
+.widget__items-list > li + li {
+    /* Дефолты уже сброшены */
+    margin-top: 15px;
+}
+
+.widget__item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;    
+}
+
+/* СРОК СДАЧИ || РАДИЙКИ */
+
+.widget__radio {
+    display: none;
+}
+
+.widget__radio--fake {
+    display: inline-block;
+    /* vertical-align: bottom; */ /* оный не нужен, если у родителя align-items по центру */
+    position: relative;
+    height: 20px;
+    width: 20px;
+    margin-right: 10px;
+    border: 1px solid #777777;
+    border-radius: 50%;
+    background-color: white;
+}
+.widget__radio:checked + .widget__radio--fake {
+    background-color: #ffe074;
+}
+.widget__radio:checked + .widget__radio--fake::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    background-color: #3c3c3c;
+    transform: translate(-50%, -50%);
+}
+
+/* Надпись у радийки, чекбокса, тогла, етц. */
+.widget__control-title {
+    font-size: 16px;
+    line-height: 1.18;
+}
+
+.widget__radio:checked ~ .widget__control-title,
+.widget__checkbox:checked ~ .widget__control-title,
+.widget__toggle:checked ~ .widget__control-title {
+        font-weight: 500;
+}
+
+/* ДОПОЛНИТЕЛЬНЫЕ ОПЦИИ || ЧЕКБОКСЫ */
+
+.widget__checkbox {
+    display: none;
+}
+
+.widget__checkbox--fake {
+    display: inline-block;
+    position: relative;
+    height: 20px;
+    width: 20px;
+    margin-right: 10px;
+    border: 1px solid #777777;
+    border-radius: 2px;
+    background-color: transparent;
+}
+.widget__checkbox:checked + .widget__checkbox--fake {
+    background-color: #ffe074;
+}
+.widget__checkbox:checked + .widget__checkbox--fake::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 20px;
+    width: 20px;
+    background: url(./../img/icons/check.svg) center no-repeat;
+    transform: translate(-50%, -50%);
+}
+
+/* СКРЫТЫЕ ЭЛЕМЕНТЫ */
+
+.widget-hidden {
+    display: none;
+}
+
+.btn__show-hidden {
+    padding: 0;
+    border: none;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 1.18;
+    background-color: transparent;
+    color: #4290c9;
+    transition: opacity 0.2s ease-in;
+}
+.btn__show-hidden:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+}
+
+/* УСЛУГИ */
+
+.widget__toggle {
+    display: none;
+}
+
+.widget__toggle--fake {
+    display: inline-block;
+    position: relative;
+    height: 20px;
+    width: 37px;
+    margin-right: 10px;
+    border-radius: 10px;
+    background-color: #c4c4c4;
+}
+.widget__toggle--fake::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background-color: #3c3c3c;
+    transition: left 0.2s ease-in;
+}
+
+.widget__toggle:checked + .widget__toggle--fake {
+    background-color: #ffe074;
+}
+.widget__toggle:checked + .widget__toggle--fake::before {
+    left: 19px;
+}
+
+/* КНОПКИ "ПРИМЕНИТЬ" И "СБРОСИТЬ" */
+
+.widget__buttons-list > * + * {
+    margin-top: 10px;
+}
+
+.form-btn {
+    /* Display/Flexbox */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Layout */
+    height: 50px;
+    width: 100%;
+    border: 1px solid #d6d6d6;
+    border-radius: 4px;
+    /* Formatting */
+    font: 16px/1 Roboto, sans-serif;
+    /* Color, behavior, etc. */
+    background-color: transparent;
+    transition: background-color 0.2s ease-in;
+    cursor: pointer;
+}
+.form-btn:hover {
+    background-color: #d6d6d6;
+}
+
+.form-btn__icon {
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.form-btn--submit {
+    border: none;
+    background-color: #ffcf26;
+}
+.form-btn--submit:hover {
+    background-color: #ffe27a;
+}
